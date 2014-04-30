@@ -107,7 +107,7 @@ object Orders extends App {
 
     val cartEndpoint = host("api.sphere.io").secure / "my-project-key" / "carts" / cartId
 
-    val setShippingAddressReq = cartEndpoint.POST
+    val addLineItemReq = cartEndpoint.POST
       .addHeader("Authorization", "Bearer " + token)
       .setBody(compact(render(
       ("version" -> cartVersion) ~
@@ -119,7 +119,7 @@ object Orders extends App {
         ))
     )))
 
-    val cart = Http(setShippingAddressReq OK as.lift.Json)
+    val cart = Http(addLineItemReq OK as.lift.Json)
 
     // Example "Add Line Item to Cart": END!!!
 
@@ -135,7 +135,7 @@ object Orders extends App {
 
     val orders = host("api.sphere.io").secure / "my-project-key" / "orders"
 
-    val setShippingAddressReq = orders.POST
+    val createOrderReq = orders.POST
       .addHeader("Authorization", "Bearer " + token)
       .setBody(compact(render(
         ("id" -> cartId) ~
@@ -143,7 +143,7 @@ object Orders extends App {
         ("paymentState" -> "Paid")
       )))
 
-    val order = Http(setShippingAddressReq OK as.lift.Json)
+    val order = Http(createOrderReq OK as.lift.Json)
 
     // Example "Create Order from Cart": END!!!
 
